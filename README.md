@@ -45,23 +45,23 @@ The following methods will then be added to your model for each of the types bas
 
 #### Class Methods
 
-`create_home_address` - Creates a new address model in the database with the type of `home_address`
-`find_by_can_be_types` - Accepts a list of types and returns the results of the database query (note: this is only added once, not for each type)
-`home_addresses` - Returns a list of the records with a type of `home_address`
-`new_home_address` - Instantiates a new address model instance with the type of `home_address`
+* `create_home_address` - Creates a new address model in the database with the type of `home_address`
+* `find_by_can_be_types` - Accepts a list of types and returns the results of the database query (note: this is only added once, not for each type)
+* `home_addresses` - Returns a list of the records with a type of `home_address`
+* `new_home_address` - Instantiates a new address model instance with the type of `home_address`
 
 #### Instance Methods
 
-`change_to_home_address` - Changes the record to a `home_address` type (does not save it to the database)
-`change_to_home_address!` - Changes the record to a `home_address` type and saves it to the database
-`home_address?` - Returns true if the record is a `home_address` type
+* `change_to_home_address` - Changes the record to a `home_address` type (does not save it to the database)
+* `change_to_home_address!` - Changes the record to a `home_address` type and saves it to the database
+* `home_address?` - Returns true if the record is a `home_address` type
 
 ### Options
 
 The following options can be added to the `can_be` method call.
 
-`default_type` - Sets the default value for when a new record is instantiated (it is the first value in the list by default)
-`field_name` - Sets the ActiveRecord field name that is to be used (by default it expects a `can_be_type` field to be present)
+* `default_type` - Sets the default value for when a new record is instantiated (it is the first value in the list by default)
+* `field_name` - Sets the ActiveRecord field name that is to be used (by default it expects a `can_be_type` field to be present)
 
 Here is an example.
 
