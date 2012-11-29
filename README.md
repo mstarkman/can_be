@@ -1,4 +1,4 @@
-# CanBe
+# CanBe [![Build Status](https://secure.travis-ci.org/mstarkman/can_be.png?branch=master)](https://travis-ci.org/mstarkman/can_be)
 
 Adds helper methods to your Active Record models to control the type of record.
 
