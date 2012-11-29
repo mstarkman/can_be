@@ -20,6 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('rspec', '~> 2.0')
   gem.add_development_dependency('sqlite3')
   gem.add_development_dependency('database_cleaner')
+  gem.add_development_dependency('rake')
 
   gem.add_dependency("activerecord", "~> 3.1")
   gem.add_dependency("activesupport", "~> 3.1")
