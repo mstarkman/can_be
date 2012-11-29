@@ -1,6 +1,6 @@
 # CanBe
 
-TODO: Write a gem description
+Adds helper methods to your Active Record models to control the type of record.
 
 ## Installation
 

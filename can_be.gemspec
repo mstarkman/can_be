@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = CanBe::VERSION
   gem.authors       = ["Mark Starkman"]
   gem.email         = ["mrstarkman@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Adds helper methods to your Active Record models to control the type of record.}
+  gem.summary       = %q{Adds helper methods to your Active Record models to control the type of record.}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
