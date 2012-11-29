@@ -9,6 +9,7 @@ module CanBe
     def define_methods
       define_instance_methods
       define_class_methods
+      define_validations
     end
 
     private
@@ -76,6 +77,14 @@ module CanBe
           end
         EVAL
       end
+    end
+
+    def define_validations
+      field_name = @options[:field_name]
+
+      @klass.class_eval <<-EVAL
+        validates_inclusion_of :#{field_name}, in: ['#{@types.join(',').gsub(/,/, "', '")}']
+      EVAL
     end
   end
 end

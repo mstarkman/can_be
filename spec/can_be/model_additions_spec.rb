@@ -159,4 +159,15 @@ describe CanBe::ModelExtensions do
       Person.new_female.gender.should == 'female'
     end
   end
+
+  context "validity of type value" do
+    it "should be valid" do
+      Address.new_home_address.should be_valid
+      Address.new_work_address.should be_valid
+    end
+
+    it "should not be valid" do
+      Address.new(can_be_type: 'invalid type').should_not be_valid
+    end
+  end
 end
