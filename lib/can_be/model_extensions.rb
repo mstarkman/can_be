@@ -11,7 +11,7 @@ module CanBe
           types.delete types.last
         end
 
-        CanBe::Initializer.new(self, types.map(&:to_s), options).define_methods
+        CanBe::Initializer.new(self, types, options).define_methods
       end
     end
   end
