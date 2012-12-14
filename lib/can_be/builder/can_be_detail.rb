@@ -14,7 +14,7 @@ module CanBe
         can_be_model = @can_be_model
 
         @klass.class_eval do
-          has_one can_be_model, as: :details
+          has_one can_be_model, as: :details, dependent: :destroy
         end
       end
     end

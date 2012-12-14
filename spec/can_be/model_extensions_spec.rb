@@ -236,6 +236,13 @@ describe CanBe::ModelExtensions do
           found_upload.save
           ImageUploadDetail.count.should == 1
         end
+
+        it "deletes the details record" do
+          u = Upload.create_image_upload
+          ImageUploadDetail.count.should == 1
+          u.destroy
+          ImageUploadDetail.count.should == 0
+        end
       end
 
       context "create method" do
@@ -372,6 +379,13 @@ describe CanBe::ModelExtensions do
     it "implements has_one to the can_be model" do
       u = Upload.create_image_upload
       ImageUploadDetail.first.upload.should == u
+    end
+
+    it "deletes the can_be model" do
+      Upload.create_image_upload
+      Upload.count.should == 1
+      ImageUploadDetail.first.destroy
+      Upload.count.should == 0
     end
   end
 end
