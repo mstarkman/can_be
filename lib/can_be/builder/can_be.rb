@@ -33,8 +33,16 @@ module CanBe
       end
 
       def define_instance_methods
-        @klass.can_be_config.types.each do |t|
-          @klass.instance_eval do
+        klass = @klass
+
+        klass.instance_eval do
+          define_method "#{klass.can_be_config.field_name}=" do |value|
+            can_be_processor.field_value = value
+          end
+        end
+
+        klass.can_be_config.types.each do |t|
+          klass.instance_eval do
             define_method "#{t}?" do
               can_be_processor.boolean_eval(t)
             end

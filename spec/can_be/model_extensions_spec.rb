@@ -285,6 +285,86 @@ describe CanBe::ModelExtensions do
           ImageUploadDetail.count.should == 0
         end
       end
+
+      context "change type via #change_to" do
+        it "changes the details record type" do
+          u = Upload.new_image_upload
+          u.change_to_video_upload
+          u.details.should be_instance_of(VideoUploadDetail)
+        end
+
+        it "changes the details to nil" do
+          u = Upload.new_image_upload
+          u.change_to_thumbnail_upload
+          u.details.should be_nil
+        end
+
+        it "doesn't create a new record in the database" do
+          u = Upload.new_image_upload
+          u.change_to_video_upload
+          ImageUploadDetail.count.should == 0
+          VideoUploadDetail.count.should == 0
+        end
+
+        it "has access to the original details if not saved" do
+          u = Upload.create_image_upload
+          u.change_to_video_upload
+          Upload.find(u.id).details.should be_instance_of(ImageUploadDetail)
+        end
+      end
+
+      context "change type via #change_to!" do
+        it "changes the details record type" do
+          u = Upload.create_video_upload
+          u.change_to_image_upload!
+          Upload.find(u.id).details.should be_instance_of(ImageUploadDetail)
+        end
+
+        it "changes the details to nil" do
+          u = Upload.create_image_upload
+          u.change_to_thumbnail_upload!
+          Upload.find(u.id).details.should be_nil
+        end
+
+        it "doesn't create a new record in the database" do
+          u = Upload.create_video_upload
+          u.change_to_image_upload!
+          ImageUploadDetail.count.should == 1
+        end
+
+        it "removes the old database record from the database" do
+          u = Upload.create_image_upload
+          u.change_to_video_upload!
+          ImageUploadDetail.count.should == 0
+        end
+      end
+
+      context "change type setting the model attribute" do
+        it "changes the details record type" do
+          u = Upload.new_image_upload
+          u.can_be_type = "video_upload"
+          u.details.should be_instance_of(VideoUploadDetail)
+        end
+
+        it "changes the details to nil" do
+          u = Upload.new_image_upload
+          u.can_be_type = "thumbnail_upload"
+          u.details.should be_nil
+        end
+
+        it "doesn't create a new record in the database" do
+          u = Upload.new_image_upload
+          u.can_be_type = "video_upload"
+          ImageUploadDetail.count.should == 0
+          VideoUploadDetail.count.should == 0
+        end
+
+        it "has access to the original details if not saved" do
+          u = Upload.create_image_upload
+          u.can_be_type = "video_upload"
+          Upload.find(u.id).details.should be_instance_of(ImageUploadDetail)
+        end
+      end
     end
   end
 

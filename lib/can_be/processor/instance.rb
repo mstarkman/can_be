@@ -13,18 +13,21 @@ module CanBe
 
       def update_field(t, save = false)
         if save
+          original_details = @model.details
           @model.update_attributes(@field_name => t)
+          original_details.destroy unless original_details.class == @model.details.class
         else
           self.field_value = t
         end
       end
 
       def field_value=(t)
-        @model.send("#{@field_name}=", t)
+        set_details(t)
+        @model.send(:write_attribute, @field_name, t)
       end
 
       def field_value
-        @model.send(@field_name)
+        @model.read_attribute(@field_name)
       end
 
       def set_default_field_value
@@ -32,8 +35,25 @@ module CanBe
       end
 
       def initialize_details
-        classname = @config.details[field_value.to_sym]
-        @model.details = classname.constantize.new if classname && !@model.details_id
+        set_details(field_value.to_sym) if has_details? && !@model.details_id
+      end
+
+      private
+      def has_details?
+        @model.respond_to?(:details) && @model.respond_to?(:details_id) && @model.respond_to?(:details_type)
+      end
+
+      def set_details(t)
+        return unless has_details?
+
+        classname = @config.details[t.to_sym]
+
+        if classname
+          @model.details = classname.constantize.new
+        else
+          @model.details_id = nil
+          @model.details_type = nil
+        end
       end
     end
   end
