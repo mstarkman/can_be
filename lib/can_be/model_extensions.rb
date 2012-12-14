@@ -5,13 +5,25 @@ module CanBe
     extend ActiveSupport::Concern
 
     module ClassMethods
+      def can_be_config
+        @can_be_config ||= CanBe::Config.new
+      end
+
       def can_be(*types)
         if types.last.is_a?(Hash)
           options = types.last
           types.delete types.last
         end
 
-        CanBe::Initializer.new(self, types, options).define_methods
+        can_be_config.types = types
+        can_be_config.parse_options options if options
+
+        CanBe::Builder::CanBe.build(self)
+      end
+
+      def can_be_detail(can_be_model, can_be_type)
+        CanBe::Config.add_detail_model self, can_be_model, can_be_type
+        CanBe::Builder::CanBeDetail.build(self, can_be_model)
       end
     end
   end
