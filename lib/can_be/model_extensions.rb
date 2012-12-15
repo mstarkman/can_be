@@ -6,7 +6,7 @@ module CanBe
 
     module ClassMethods
       def can_be_config
-        CanBe::Config.for_model self
+        @can_be_config ||= CanBe::Config.new
       end
 
       def can_be(*types)

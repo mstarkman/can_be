@@ -11,14 +11,12 @@ class Person < ActiveRecord::Base
   can_be :male, :female, field_name: :gender, default_type: :female
 end
 
-# This needs to stay above the Upload model class to ensure everything loads
-# into the config properly
-class ImageUploadDetail < ActiveRecord::Base
-  can_be_detail :upload, :image_upload
-end
-
 class Upload < ActiveRecord::Base
   can_be :image_upload, :video_upload, :thumbnail_upload, :document_upload, :pdf_upload
+end
+
+class ImageUploadDetail < ActiveRecord::Base
+  can_be_detail :upload, :image_upload
 end
 
 class VideoUploadDetail < ActiveRecord::Base
