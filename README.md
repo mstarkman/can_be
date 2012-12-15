@@ -75,19 +75,24 @@ end
 
 ### Details Model Configuration
 
-In order to wire up a model to be a CanBe details model, you will need
-to call the `can_be_detail` method on that model.
+In order to wire up a model to be a CanBe details model, you will need to call the `can_be_detail` method on that model.
 
 ```ruby
 class HomeAddressDetail < ActiveRecord::Base
-  can_be_detail :address, :home_address
+  can_be_detail :address
 end
 ```
-The `can_be_detail` method take in two parameters.
+The `can_be_detail` method take in one parameter.  The parameter is the link to the CanBe model.  This must be a symbol that will reference the CanBe model.  In order to create the proper symbol, you can execute the following into your Rails console: `<ModelName>.name.underscore.to_sym`.  Here is an example: `Address.name.underscore.to_sym`.  In the above example, this will be used for the `Address` CanBe model.
 
-The first is the link to the CanBe model.  This must be a symbol that will reference the CanBe model.  In order to create the proper symbol, you can execute the following into your Rails console: `<ModelName>.name.underscore.to_sym`.  Here is an example: `Address.name.underscore.to_sym`.  In the above example, this will be used for the `Address` CanBe model.
+You will also need to call the `add_details_model` method in the `can_be` block, passing in the CanBe type and a symbol that represets the details model class.
 
-The second parameter is the CanBe type that this model is to be used for.  In the example above, the `HomeAddressDetail` model will used for the `:home_address` CanBe type.
+```ruby
+class Address < ActiveRecord::Base
+  can_be :home_address, :work_address, :vacation_address do
+    add_details_model :home_address, :home_address_detail
+  end
+end
+```
 
 ## Usage
 

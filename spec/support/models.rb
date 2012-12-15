@@ -12,15 +12,18 @@ class Person < ActiveRecord::Base
 end
 
 class Upload < ActiveRecord::Base
-  can_be :image_upload, :video_upload, :thumbnail_upload, :document_upload, :pdf_upload
+  can_be :image_upload, :video_upload, :thumbnail_upload, :document_upload, :pdf_upload do
+    add_details_model :image_upload, :image_upload_detail
+    add_details_model :video_upload, :video_upload_detail
+  end
 end
 
 class ImageUploadDetail < ActiveRecord::Base
-  can_be_detail :upload, :image_upload
+  can_be_detail :upload
 end
 
 class VideoUploadDetail < ActiveRecord::Base
-  can_be_detail :upload, :video_upload
+  can_be_detail :upload
 end
 
 class ThumbnailUploadDetail < ActiveRecord::Base

@@ -49,7 +49,7 @@ module CanBe
         classname = @config.details[t.to_sym]
 
         if classname
-          @model.details = classname.constantize.new
+          @model.details = classname.to_s.camelize.constantize.new
         else
           @model.details_id = nil
           @model.details_type = nil

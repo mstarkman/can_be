@@ -9,7 +9,7 @@ module CanBe
         @can_be_config ||= CanBe::Config.new
       end
 
-      def can_be(*types)
+      def can_be(*types, &block)
         if types.last.is_a?(Hash)
           options = types.last
           types.delete types.last
@@ -18,11 +18,12 @@ module CanBe
         can_be_config.types = types
         can_be_config.parse_options options if options
 
+        can_be_config.instance_eval(&block)if block_given?
+
         CanBe::Builder::CanBe.build(self)
       end
 
-      def can_be_detail(can_be_model, can_be_type)
-        CanBe::Config.add_detail_model self, can_be_model, can_be_type
+      def can_be_detail(can_be_model)
         CanBe::Builder::CanBeDetail.build(self, can_be_model)
       end
     end

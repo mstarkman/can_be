@@ -25,9 +25,8 @@ module CanBe
       @details ||= {}
     end
 
-    def self.add_detail_model(klass, can_be_class, can_be_type)
-      config = can_be_class.to_s.camelize.constantize.can_be_config
-      config.details[can_be_type] = klass.name
+    def add_details_model(can_be_type, model_symbol)
+      self.details[can_be_type] = model_symbol
     end
   end
 end
