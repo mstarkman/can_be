@@ -26,8 +26,16 @@ module CanBe
     end
 
     def self.add_detail_model(klass, can_be_class, can_be_type)
-      config = can_be_class.to_s.camelize.constantize.can_be_config
+      config = for_model(can_be_class)
       config.details[can_be_type] = klass.name
+    end
+
+    def self.for_model(klass)
+      config_hash = @config_hash ||= {}
+      hash_key = klass.is_a?(Symbol) ? klass : klass.name.underscore.to_sym
+
+      config_hash[hash_key] = Config.new unless config_hash.has_key? hash_key
+      config_hash[hash_key]
     end
   end
 end
