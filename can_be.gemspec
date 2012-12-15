@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = CanBe::VERSION
   gem.authors       = ["Mark Starkman"]
   gem.email         = ["mrstarkman@gmail.com"]
-  gem.description   = %q{Adds helper methods to your Active Record models to control the type of record.}
-  gem.summary       = %q{Adds helper methods to your Active Record models to control the type of record.}
+  gem.description   = %q{CanBe allows you to track the type of your ActiveRecord model in a consistent simple manner.  With just a little configuration on your part, each type of record can contain different attributes that are specifc to that type of record.}
+  gem.summary       = %q{CanBe allows you to track the type of your ActiveRecord model in a consistent simple manner.  With just a little configuration on your part, each type of record can contain different attributes that are specifc to that type of record.  From a data modelling perspective this is preferred over ActiveRecord STI since you will not have many columns in your database that have null values.  Under the hood, CanBe uses one-to-one Polymorphic Associations to accomplish the different attributes per type.}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
