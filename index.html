@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Can be by mstarkman</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Can be</h1>
+        <p class="header">CanBe allows you to track the type of your ActiveRecord model in a consistent simple manner.  With just a little configuration on your part, each type of record can contain different attributes that are specifc to that type of record.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/mstarkman/can_be/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/mstarkman/can_be/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/mstarkman/can_be">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/mstarkman">mstarkman</a></p>
+
+
+      </header>
+      <section>
+        <h1>CanBe <a href="https://travis-ci.org/mstarkman/can_be"><img src="https://secure.travis-ci.org/mstarkman/can_be.png?branch=master" alt="Build Status"></a> <a href="https://codeclimate.com/github/mstarkman/can_be"><img src="https://codeclimate.com/badge.png" alt="Code Climate"></a>
+</h1>
+
+<p>CanBe allows you to track the type of your ActiveRecord model in a consistent simple manner.  With just a little configuration on your part, each type of record can contain different attributes that are specifc to that type of record.  From a data modelling perspective this is preferred over <a href="http://api.rubyonrails.org/classes/ActiveRecord/Base.html#label-Single+table+inheritance">ActiveRecord STI</a> since you will not have many columns in your database that have null values.  Under the hood, CanBe uses one-to-one <a href="http://guides.rubyonrails.org/association_basics.html#polymorphic-associations">Polymorphic Associations</a> to accomplish the different attributes per type.</p>
+
+<h2>Installation</h2>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'can_be'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre><code>$ gem install can_be
+</code></pre>
+
+<h2>Database Configuration (via migrations)</h2>
+
+<p>In its simplest form, you only need to add a string attribute (column) to the model can be different types.  By default, this attribute must be named <code>can_be_type</code>.  However, you can have the attribute be named anything that you would like, you just need to tell CanBe what it is.  Indexing this column is your choice.</p>
+
+<p>Example migration:</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">AddCanBeTypeToAddresses</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:addresses</span><span class="p">,</span> <span class="ss">:can_be_type</span><span class="p">,</span> <span class="ss">:string</span>
+    <span class="n">add_index</span> <span class="ss">:addresses</span><span class="p">,</span> <span class="ss">:can_be_type</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<h3>Details Configuration</h3>
+
+<p>If you want to store different attributes (columns), there are some more columns that you will need to add to your model, <code>details_id</code> and <code>details_type</code>.  These fields will be used to store the relationships to the details information.  Indexing these columns is your choice.</p>
+
+<p>Example migration:</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">AddCanBeDetailsToAddresses</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:addresses</span><span class="p">,</span> <span class="ss">:details_id</span><span class="p">,</span> <span class="ss">:integer</span>
+    <span class="n">add_column</span> <span class="ss">:addresses</span><span class="p">,</span> <span class="ss">:details_type</span><span class="p">,</span> <span class="ss">:string</span>
+    <span class="n">add_index</span> <span class="ss">:addresses</span><span class="p">,</span> <span class="o">[</span><span class="ss">:details_id</span><span class="p">,</span> <span class="ss">:details_type</span><span class="o">]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>You will also need to create the models that will be used to represent the details attributes for each type.  You will need to configure the model to be a details model be calling the <code>can_be_detail</code> method in your model.  You do not need to specify a details model for each CanBe type if there are not any extra attributes required for that type.</p>
+
+<h2>Model Configuration</h2>
+
+<p>To add CanBe to your model, you simply need to call the <code>can_be</code> method
+on your model.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Address</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">can_be</span> <span class="ss">:home_address</span><span class="p">,</span> <span class="ss">:work_address</span><span class="p">,</span> <span class="ss">:vacation_address</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>The <code>can_be</code> method will take in a list of valid types that will be used by CanBe.  There is an optional last parameter that is a hash of the options.  This is a list of valid options.</p>
+
+<ul>
+<li>
+<code>:default_type</code> - Sets the default value for when a new record is instantiated or created (it is the first value in the list by default)</li>
+<li>
+<code>:field_name</code> - Sets the ActiveRecord field name that is to be used (if not specified, CanBe expects a <code>can_be_type</code> attribute to be present)</li>
+</ul><p>Here is an example of the options.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">can_be</span> <span class="ss">:male</span><span class="p">,</span> <span class="ss">:female</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="ss">:gender</span><span class="p">,</span> <span class="n">default_type</span><span class="p">:</span> <span class="ss">:female</span>
+<span class="k">end</span>
+</pre></div>
+
+<h3>Details Model Configuration</h3>
+
+<p>In order to wire up a model to be a CanBe details model, you will need to call the <code>can_be_detail</code> method on that model.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeAddressDetail</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">can_be_detail</span> <span class="ss">:address</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>The <code>can_be_detail</code> method take in one parameter.  The parameter is the link to the CanBe model.  This must be a symbol that will reference the CanBe model.  In order to create the proper symbol, you can execute the following into your Rails console: <code>&lt;ModelName&gt;.name.underscore.to_sym</code>.  Here is an example: <code>Address.name.underscore.to_sym</code>.  In the above example, this will be used for the <code>Address</code> CanBe model.</p>
+
+<p>You will also need to call the <code>add_details_model</code> method in the <code>can_be</code> block, passing in the CanBe type and a symbol that represets the details model class.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Address</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">can_be</span> <span class="ss">:home_address</span><span class="p">,</span> <span class="ss">:work_address</span><span class="p">,</span> <span class="ss">:vacation_address</span> <span class="k">do</span>
+    <span class="n">add_details_model</span> <span class="ss">:home_address</span><span class="p">,</span> <span class="ss">:home_address_detail</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<h2>Usage</h2>
+
+<p>The CanBe gem will provide you a lot methods to handle your type processing in an easy and consistent manner.</p>
+
+<h3>Instantiating New Models</h3>
+
+<p>You can continue to instantiate your CanBe models by using the <code>new</code> method.  When you do, CanBe will ensure that the type of the record is assigned the detault CanBe type for your model.</p>
+
+<p>There are also some helper methods put on your model to make it easier to instantiate the type of model that you want.  These methods will take the form of <code>new_&lt;CanBe type&gt;</code>.  For example, you can call <code>Address.new_home_address</code>.  These methods will take the same parameters as the base <code>new</code> method provided by ActiveRecord.</p>
+
+<h3>Creating New Models</h3>
+
+<p>You can continue to create your CanBe models by using the <code>create</code> method.  When you do, CanBe will ensure that the type of the record is assigned the detault CanBe type for your model.</p>
+
+<p>There are also some helper methods put on your model to make it easier to create the type of model that you want.  These methods will take the form of <code>create_&lt;CanBe type&gt;</code>.  For example, you can call <code>Address.create_home_address</code>.  These methods will take the same parameters as the base <code>create</code> method provided by ActiveRecord.</p>
+
+<h3>Changing CanBe Types</h3>
+
+<p>There are several ways to change the type of record that you are working with.  You can access the <code>can_be_type</code> attribute (or other attribute if you specified the field to be used) and change the value directly.</p>
+
+<p>There are also instance methods provided on your model that allow for changing to a specific CanBe type.</p>
+
+<p>You can change the type of record and not persist it immediately to the database by calling the appropriate <code>change_to_&lt;CanBe type&gt;</code> method.  For example, you can call <code>Address.new.change_to_work_address</code> method to change the record to be of CanBe type <code>:work_address</code>.</p>
+
+<p>If you want to change the type of the record and persist it to the database immediately, you can call the appropriate <code>change_to_&lt;CanBe type&gt;!</code> method.  For example, this method call will change the type of record to <code>:work_address</code> and persist the change to the database: <code>Address.create.change_to_work_address!</code></p>
+
+<p>There is a validator for the CanBe field, that will unsure that the CanBe field is set to one of the CanBe types before persisting the record. </p>
+
+<p>NOTE: that when you are changing the type of record the details record will be changed to the correct CanBe details record.  New records will only be persisted to the database when the CanBe model is persisted.  If you change the CanBe model to a type that does not have a corresponding details model, <code>nil</code> will be stored for the details.</p>
+
+<h3>Boolean Evaluation</h3>
+
+<p>With CanBe, it is easy to determine the type of record that you are working with.  This is accomplished by calling the <code>&lt;CanBe type&gt;?</code> on the instance of your model.  For example if you wanted to see if the <code>Address</code> instance you are working with, you would call <code>Address.first.home_address?</code> and it would return <code>true</code> or <code>false</code> depending on the CanBe type of the record.</p>
+
+<h3>Finding Records</h3>
+
+<p>There are two ways to find specific types of records.  You can use the <code>find_by_can_be_types</code> method, which takes in a list of the CanBe types that you want to find.  For example, if you wanted to find all of the home and work addresses you would call <code>Address.find_by_can_be_types :home_address, :work_address</code>.</p>
+
+<p>Methods are also defined on your CanBe model that will find all of the records for a specific CanBe type.  These methods take the form of <code>&lt;pluralized CanBe type&gt;</code>.  For example, <code>Address.home_addresses</code> would return all of the records with a type of <code>:home_address</code>.</p>
+
+<h3>Accessing the Details</h3>
+
+<p>If you want to access the details model, you can call the <code>details</code> method on your instance and the instance of your model will be returned.  If the type of model that you are using does not have a details model, <code>nil</code> will be returned.</p>
+
+<p>When you persist your CanBe model to the database, your details model will automatically be persisted.</p>
+
+<h2>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)
+
+<ul>
+<li>Make sure to include the appropriate specs</li>
+<li>Specs can be run by executing the <code>rake</code> command in the terminal</li>
+</ul>
+</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol><h2>License</h2>
+
+<p>See <a href="https://github.com/mstarkman/can_be/blob/master/LICENSE.txt">LICENSE.txt</a>.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
