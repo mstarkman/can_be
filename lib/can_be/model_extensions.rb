@@ -18,7 +18,7 @@ module CanBe
         can_be_config.types = types
         can_be_config.parse_options options if options
 
-        can_be_config.instance_eval(&block)if block_given?
+        can_be_config.instance_eval(&block) if block_given?
 
         CanBe::Builder::CanBe.build(self)
       end

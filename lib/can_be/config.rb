@@ -4,8 +4,12 @@ module CanBe
 
     attr_reader :types
 
-    def field_name
-      @field_name || CanBe::Config::DEFAULT_CAN_BE_FIELD
+    def field_name(name = nil)
+      if name.nil?
+        @field_name || CanBe::Config::DEFAULT_CAN_BE_FIELD
+      else
+        @field_name = name
+      end
     end
 
     def types=(types)

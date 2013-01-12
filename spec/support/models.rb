@@ -8,7 +8,9 @@ class Address < ActiveRecord::Base
 end
 
 class Person < ActiveRecord::Base
-  can_be :male, :female, field_name: :gender, default_type: :female
+  can_be :male, :female, default_type: :female do
+    field_name :gender
+  end
 end
 
 class Upload < ActiveRecord::Base

@@ -5,6 +5,12 @@ describe CanBe::Config do
     it "defines a default field name" do
       subject.field_name.should == :can_be_type
     end
+
+    it "sets the field name" do
+      field_name = :custom_field_name
+      subject.field_name field_name
+      subject.field_name.should == field_name
+    end
   end
 
   context "#types" do

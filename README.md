@@ -73,6 +73,16 @@ class Person < ActiveRecord::Base
 end
 ```
 
+Or you can set the options in a block when calling `can_be`.
+
+```ruby
+class Person < ActiveRecord::Base
+  can_be :male, :female, default_type: :female do
+    field_name :gender
+  end
+end
+```
+
 ### Details Model Configuration
 
 In order to wire up a model to be a CanBe details model, you will need to call the `can_be_detail` method on that model.
