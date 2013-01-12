@@ -77,8 +77,9 @@ Or you can set the options in a block when calling `can_be`.
 
 ```ruby
 class Person < ActiveRecord::Base
-  can_be :male, :female, default_type: :female do
+  can_be :male, :female do
     field_name :gender
+    default_type :female
   end
 end
 ```

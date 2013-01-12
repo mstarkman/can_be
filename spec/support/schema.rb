@@ -12,6 +12,11 @@ ActiveRecord::Schema.define do
     t.timestamps
   end
 
+  create_table :block_options, :force => true do |t|
+    t.string :option_type
+    t.timestamps
+  end
+
   create_table :uploads, :force => true do |t|
     t.string :can_be_type
     t.integer :details_id

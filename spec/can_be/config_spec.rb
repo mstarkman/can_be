@@ -28,6 +28,12 @@ describe CanBe::Config do
     it "returns the first type by default" do
       subject.default_type.should == "a"
     end
+
+    it "sets the default type" do
+      default_type = :custom_default_type
+      subject.default_type default_type
+      subject.default_type.should == default_type
+    end
   end
 
   context "#parse_options" do

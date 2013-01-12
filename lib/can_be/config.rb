@@ -16,8 +16,12 @@ module CanBe
       @types = types.map(&:to_s)
     end
 
-    def default_type
-      @default_type || @types.first
+    def default_type(type = nil)
+      if type.nil?
+        @default_type || @types.first
+      else
+        @default_type = type
+      end
     end
 
     def parse_options(options = {})

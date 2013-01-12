@@ -8,8 +8,13 @@ class Address < ActiveRecord::Base
 end
 
 class Person < ActiveRecord::Base
-  can_be :male, :female, default_type: :female do
-    field_name :gender
+  can_be :male, :female, field_name: :gender, default_type: :female
+end
+
+class BlockOption < ActiveRecord::Base
+  can_be :option_1, :option_2 do
+    field_name :option_type
+    default_type :option_2
   end
 end
 

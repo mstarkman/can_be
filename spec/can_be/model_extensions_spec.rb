@@ -174,6 +174,10 @@ describe CanBe::ModelExtensions do
       it "uses the specified default_type option" do
         Person.new.should be_female
       end
+
+      it "uses the specified default_type block option" do
+        BlockOption.new.should be_option_2
+      end
     end
 
     context "database field" do
@@ -183,6 +187,10 @@ describe CanBe::ModelExtensions do
 
       it "uses the specified field" do
         Person.new_female.gender.should == 'female'
+      end
+
+      it "uses the specified field (block options)" do
+        BlockOption.new_option_1.option_type.should == 'option_1'
       end
     end
 

@@ -8,7 +8,7 @@ module CanBe
       end
 
       def boolean_eval(t)
-        field_value == t
+        field_value.to_s == t.to_s
       end
 
       def update_field(t, save = false)
