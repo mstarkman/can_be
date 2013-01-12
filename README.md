@@ -133,6 +133,14 @@ If you want to change the type of the record and persist it to the database imme
 
 There is a validator for the CanBe field, that will unsure that the CanBe field is set to one of the CanBe types before persisting the record. 
 
+When changing the type of the record via either of these methods, you can pass in a block that will provide you access to the new details record so you can set any data in one method call.
+
+```ruby
+upload.change_to_image_upload do |details|
+  details.format = "jpeg"
+end
+```
+
 NOTE: that when you are changing the type of record the details record will be changed to the correct CanBe details record.  New records will only be persisted to the database when the CanBe model is persisted.  If you change the CanBe model to a type that does not have a corresponding details model, `nil` will be stored for the details.
 
 ### Boolean Evaluation

@@ -1,6 +1,7 @@
 ## Version 0.3.0
 
-Allowed the options to be specified inside the can_be method call block
+* Allowed the options to be specified inside the can_be method call block
+* Added a block processor to each of the `change_to` methods
 
 ## Version 0.2.1
 

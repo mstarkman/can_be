@@ -326,6 +326,15 @@ describe CanBe::ModelExtensions do
           u.change_to_video_upload
           Upload.find(u.id).details.should be_instance_of(ImageUploadDetail)
         end
+
+        it "allows for items to be set on the new details records" do
+          new_encoding = "new encoding"
+          u = Upload.new_image_upload
+          u.change_to_video_upload do |details|
+            details.encoding = new_encoding
+          end
+          u.details.encoding.should == new_encoding
+        end
       end
 
       context "change type via #change_to!" do
@@ -351,6 +360,15 @@ describe CanBe::ModelExtensions do
           u = Upload.create_image_upload
           u.change_to_video_upload!
           ImageUploadDetail.count.should == 0
+        end
+
+        it "allows for items to be set on the new details records" do
+          new_format = "new format"
+          u = Upload.create_video_upload
+          u.change_to_image_upload! do |details|
+            details.format = new_format
+          end
+          Upload.find(u.id).details.format.should == new_format
         end
       end
 

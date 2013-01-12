@@ -47,12 +47,12 @@ module CanBe
               can_be_processor.boolean_eval(t)
             end
 
-            define_method "change_to_#{t}" do
-              can_be_processor.update_field(t)
+            define_method "change_to_#{t}" do |&block|
+              can_be_processor.update_field(t, false, &block)
             end
 
-            define_method "change_to_#{t}!" do
-              can_be_processor.update_field(t, true)
+            define_method "change_to_#{t}!" do |&block|
+              can_be_processor.update_field(t, true, &block)
             end
           end
         end

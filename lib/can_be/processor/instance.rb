@@ -19,6 +19,11 @@ module CanBe
         else
           self.field_value = t
         end
+
+        if block_given?
+          yield(@model.details)
+          @model.details.save if save
+        end
       end
 
       def field_value=(t)
