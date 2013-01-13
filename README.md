@@ -2,19 +2,25 @@
 
 CanBe allows you to track the type of your ActiveRecord model in a consistent simple manner.  With just a little configuration on your part, each type of record can contain different attributes that are specifc to that type of record.  From a data modelling perspective this is preferred over [ActiveRecord STI](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#label-Single+table+inheritance) since you will not have many columns in your database that have null values.  Under the hood, CanBe uses one-to-one [Polymorphic Associations](http://guides.rubyonrails.org/association_basics.html#polymorphic-associations) to accomplish the different attributes per type.
 
+Here is a blog post that will describe more of the rationale behind the CanBe gem: [http://blog.markstarkman.com/blog/2013/01/09/writing-my-first-rubygem-canbe/](http://blog.markstarkman.com/blog/2013/01/09/writing-my-first-rubygem-canbe/)
+
+## Versioning
+
+I will be following [Semantic Versioning](http://semver.org/) as closely as possible.  The `master` branch will be the latest development version and may not match the version of the code you are using. There is a git tag for each released version.  The [CHANGELOG.md](https://github.com/mstarkman/can_be/blob/master/CHANGELOG.md) will contain the correct links to each version.
+
 ## Installation
 
 Add this line to your application's Gemfile:
 
     gem 'can_be'
 
+If you feel like living on the edge, you can add this to your applcation's Gemfile:
+
+    gem 'can_be', git: "git://github.com/mstarkman/can_be.git"
+
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install can_be
 
 ## Database Configuration (via migrations)
 
@@ -58,6 +64,8 @@ class AddCanBeDetailsToAddresses < ActiveRecord::Migration
   end
 end
 ```
+
+**NOTE:** Examples of the database migrations can be found in the [`spec/support/schema.rb`](https://github.com/mstarkman/can_be/blob/master/spec/support/schema.rb) file.
 
 ## Model Configuration
 
@@ -132,6 +140,8 @@ class HomeAddressDetail < ActiveRecord::Base
   can_be_detail :address, :address_details
 end
 ```
+
+**NOTE:** Examples of the model configurations can be found in the [`spec/support/models.rb`](https://github.com/mstarkman/can_be/blob/master/spec/support/models.rb) file.
 
 ## Usage
 
