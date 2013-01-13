@@ -39,6 +39,28 @@ end
 class DocumentUploadDetail
 end
 
+class CustomUpload < ActiveRecord::Base
+  can_be :image_upload, :video_upload, :thumbnail_upload, :document_upload, :pdf_upload do
+    add_details_model :image_upload, :custom_image_upload_detail
+    add_details_model :video_upload, :custom_video_upload_detail
+    details_name :custom_details
+  end
+end
+
+class CustomImageUploadDetail < ActiveRecord::Base
+  can_be_detail :custom_upload, :custom_details
+end
+
+class CustomVideoUploadDetail < ActiveRecord::Base
+  can_be_detail :custom_upload, :custom_details
+end
+
+class CustomThumbnailUploadDetail < ActiveRecord::Base
+end
+
+class CustomDocumentUploadDetail
+end
+
 class ConfigSpecModel < ActiveRecord::Base
   can_be :type1, :type2
 end

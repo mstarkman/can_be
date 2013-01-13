@@ -1,6 +1,7 @@
 module CanBe
   class Config
     DEFAULT_CAN_BE_FIELD = :can_be_type
+    DEFAULT_DETAILS_NAME = :details
 
     attr_reader :types
 
@@ -9,6 +10,14 @@ module CanBe
         @field_name || CanBe::Config::DEFAULT_CAN_BE_FIELD
       else
         @field_name = name
+      end
+    end
+
+    def details_name(name = nil)
+      if name.nil?
+        @details_name || CanBe::Config::DEFAULT_DETAILS_NAME
+      else
+        @details_name = name
       end
     end
 

@@ -94,7 +94,7 @@ module CanBe
 
       def define_details
         @klass.class_eval do
-          belongs_to :details, polymorphic: true, autosave: true, dependent: :destroy
+          belongs_to self.can_be_config.details_name.to_sym, polymorphic: true, autosave: true, dependent: :destroy
 
           after_initialize do |model|
             model.can_be_processor.initialize_details

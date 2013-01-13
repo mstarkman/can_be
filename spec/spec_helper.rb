@@ -12,6 +12,8 @@ ActiveRecord::Base.send(:include, CanBe::ModelExtensions)
 # now that we have the database configured, we can create the models and
 # migrate the database
 require 'support/models'
+require 'support/can_be_shared_examples'
+require 'support/can_be_detail_shared_examples'
 
 RSpec.configure do |config|
   config.include ModelMacros

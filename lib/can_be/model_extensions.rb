@@ -23,8 +23,8 @@ module CanBe
         CanBe::Builder::CanBe.build(self)
       end
 
-      def can_be_detail(can_be_model)
-        CanBe::Builder::CanBeDetail.build(self, can_be_model)
+      def can_be_detail(can_be_model, details_name = nil)
+        CanBe::Builder::CanBeDetail.build(self, can_be_model, details_name)
       end
     end
   end

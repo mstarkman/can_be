@@ -36,6 +36,18 @@ describe CanBe::Config do
     end
   end
 
+  context "#details_name" do
+    it "defines a default details name" do
+      subject.details_name.should == :details
+    end
+
+    it "sets the details name" do
+      details_name = :custom_details_name
+      subject.details_name details_name
+      subject.details_name.should == details_name
+    end
+  end
+
   context "#parse_options" do
     let(:field_name) { :example_field_name }
     let(:default_type) { :example_default_type }
