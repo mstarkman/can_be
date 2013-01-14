@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>CanBe</title>
+    <title>Can be by mstarkman</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -30,10 +30,16 @@
 
       </header>
       <section>
-        <h1>CanBe</a>
+        <h1>CanBe <a href="https://travis-ci.org/mstarkman/can_be"><img src="https://secure.travis-ci.org/mstarkman/can_be.png?branch=master" alt="Build Status"></a> <a href="http://badge.fury.io/rb/can_be"><img src="https://badge.fury.io/rb/can_be.png" alt="Gem Version"></a> <a href="https://codeclimate.com/github/mstarkman/can_be"><img src="https://codeclimate.com/badge.png" alt="Code Climate"></a>
 </h1>
 
 <p>CanBe allows you to track the type of your ActiveRecord model in a consistent simple manner.  With just a little configuration on your part, each type of record can contain different attributes that are specifc to that type of record.  From a data modelling perspective this is preferred over <a href="http://api.rubyonrails.org/classes/ActiveRecord/Base.html#label-Single+table+inheritance">ActiveRecord STI</a> since you will not have many columns in your database that have null values.  Under the hood, CanBe uses one-to-one <a href="http://guides.rubyonrails.org/association_basics.html#polymorphic-associations">Polymorphic Associations</a> to accomplish the different attributes per type.</p>
+
+<p>Here is a blog post that will describe more of the rationale behind the CanBe gem: <a href="http://blog.markstarkman.com/blog/2013/01/09/writing-my-first-rubygem-canbe/">http://blog.markstarkman.com/blog/2013/01/09/writing-my-first-rubygem-canbe/</a></p>
+
+<h2>Versioning</h2>
+
+<p>I will be following <a href="http://semver.org/">Semantic Versioning</a> as closely as possible.  The <code>master</code> branch will be the latest development version and may not match the version of the code you are using. There is a git tag for each released version.  The <a href="https://github.com/mstarkman/can_be/blob/master/CHANGELOG.md">CHANGELOG.md</a> will contain the correct links to each version.</p>
 
 <h2>Installation</h2>
 
@@ -42,14 +48,14 @@
 <pre><code>gem 'can_be'
 </code></pre>
 
+<p>If you feel like living on the edge, you can add this to your applcation's Gemfile:</p>
+
+<pre><code>gem 'can_be', git: "git://github.com/mstarkman/can_be.git"
+</code></pre>
+
 <p>And then execute:</p>
 
 <pre><code>$ bundle
-</code></pre>
-
-<p>Or install it yourself as:</p>
-
-<pre><code>$ gem install can_be
 </code></pre>
 
 <h2>Database Configuration (via migrations)</h2>
@@ -68,9 +74,7 @@
 
 <h3>Details Configuration</h3>
 
-<p>If you want to store different attributes (columns), there are some more columns that you will need to add to your model, <code>details_id</code> and <code>details_type</code>.  These fields will be used to store the relationships to the details information.  Indexing these columns is your choice.</p>
-
-<p>Example migration:</p>
+<p>If you want to store different attributes (columns), there are some more columns that you will need to add to your model, <code>details_id</code> and <code>details_type</code>.  These fields will be used to store the relationships to the details information.  Indexing these columns is your choice.  Example migration:</p>
 
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">AddCanBeDetailsToAddresses</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
   <span class="k">def</span> <span class="nf">change</span>
@@ -82,6 +86,19 @@
 </pre></div>
 
 <p>You will also need to create the models that will be used to represent the details attributes for each type.  You will need to configure the model to be a details model be calling the <code>can_be_detail</code> method in your model.  You do not need to specify a details model for each CanBe type if there are not any extra attributes required for that type.</p>
+
+<p>If you planning to use a different <code>details_name</code> for the relationship, you will need to change the names of the database columns to have the appropriate <code>id</code> and <code>type</code> columns. For example, if you wanted to use <code>:address_details</code> as the <code>details_name</code>, you would do this.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">AddCanBeDetailsToAddresses</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:addresses</span><span class="p">,</span> <span class="ss">:address_details_id</span><span class="p">,</span> <span class="ss">:integer</span>
+    <span class="n">add_column</span> <span class="ss">:addresses</span><span class="p">,</span> <span class="ss">:address_details_type</span><span class="p">,</span> <span class="ss">:string</span>
+    <span class="n">add_index</span> <span class="ss">:addresses</span><span class="p">,</span> <span class="o">[</span><span class="ss">:address_details_id</span><span class="p">,</span> <span class="ss">:address_details_type</span><span class="o">]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<p><strong>NOTE:</strong> Examples of the database migrations can be found in the <a href="https://github.com/mstarkman/can_be/blob/master/spec/support/schema.rb"><code>spec/support/schema.rb</code></a> file.</p>
 
 <h2>Model Configuration</h2>
 
@@ -107,6 +124,16 @@ on your model.</p>
 <span class="k">end</span>
 </pre></div>
 
+<p>Or you can set the options in a block when calling <code>can_be</code>.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">can_be</span> <span class="ss">:male</span><span class="p">,</span> <span class="ss">:female</span> <span class="k">do</span>
+    <span class="n">field_name</span> <span class="ss">:gender</span>
+    <span class="n">default_type</span> <span class="ss">:female</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
 <h3>Details Model Configuration</h3>
 
 <p>In order to wire up a model to be a CanBe details model, you will need to call the <code>can_be_detail</code> method on that model.</p>
@@ -126,6 +153,23 @@ on your model.</p>
   <span class="k">end</span>
 <span class="k">end</span>
 </pre></div>
+
+<p>If you are using a different <code>details_name</code> for the relationship, you will also need to add the configuration options like this.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Address</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">can_be</span> <span class="ss">:home_address</span><span class="p">,</span> <span class="ss">:work_address</span><span class="p">,</span> <span class="ss">:vacation_address</span> <span class="k">do</span>
+    <span class="n">add_details_model</span> <span class="ss">:home_address</span><span class="p">,</span> <span class="ss">:home_address_detail</span>
+    <span class="n">details_name</span> <span class="ss">:address_details</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">HomeAddressDetail</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">can_be_detail</span> <span class="ss">:address</span><span class="p">,</span> <span class="ss">:address_details</span>
+<span class="k">end</span>
+</pre></div>
+
+<p><strong>NOTE:</strong> Examples of the model configurations can be found in the <a href="https://github.com/mstarkman/can_be/blob/master/spec/support/models.rb"><code>spec/support/models.rb</code></a> file.</p>
 
 <h2>Usage</h2>
 
@@ -155,6 +199,13 @@ on your model.</p>
 
 <p>There is a validator for the CanBe field, that will unsure that the CanBe field is set to one of the CanBe types before persisting the record. </p>
 
+<p>When changing the type of the record via either of these methods, you can pass in a block that will provide you access to the new details record so you can set any data in one method call.</p>
+
+<div class="highlight"><pre><span class="n">upload</span><span class="o">.</span><span class="n">change_to_image_upload</span> <span class="k">do</span> <span class="o">|</span><span class="n">details</span><span class="o">|</span>
+  <span class="n">details</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">"jpeg"</span>
+<span class="k">end</span>
+</pre></div>
+
 <p>NOTE: that when you are changing the type of record the details record will be changed to the correct CanBe details record.  New records will only be persisted to the database when the CanBe model is persisted.  If you change the CanBe model to a type that does not have a corresponding details model, <code>nil</code> will be stored for the details.</p>
 
 <h3>Boolean Evaluation</h3>
@@ -172,6 +223,8 @@ on your model.</p>
 <p>If you want to access the details model, you can call the <code>details</code> method on your instance and the instance of your model will be returned.  If the type of model that you are using does not have a details model, <code>nil</code> will be returned.</p>
 
 <p>When you persist your CanBe model to the database, your details model will automatically be persisted.</p>
+
+<p>If you are using a different <code>details_name</code>, you will access the details by calling a method of the same name.  For example, if you assigned <code>:address_details</code> to the <code>details_name, then you can access the details by calling the</code>address_details` method.</p>
 
 <h2>Contributing</h2>
 
@@ -196,6 +249,16 @@ on your model.</p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-37228228-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
