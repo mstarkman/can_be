@@ -3,6 +3,7 @@
 * Allowed the options to be specified inside the can_be method call block
 * Added a block processor to each of the `change_to` methods
 * Added the ability to configure the relationship name
+* Implemented a set of custom RSpec matcher
 
 ## [Version 0.2.1](https://github.com/mstarkman/can_be/tree/v0.2.1)
 
