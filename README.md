@@ -112,7 +112,7 @@ class HomeAddressDetail < ActiveRecord::Base
 end
 ```
 
-The `can_be_detail` method take in one parameter.  The parameter is the link to the CanBe model.  This must be a symbol that will reference the CanBe model.  In order to create the proper symbol, you can execute the following into your Rails console: `<ModelName>.name.underscore.to_sym`.  Here is an example: `Address.name.underscore.to_sym`.  In the above example, this will be used for the `Address` CanBe model.
+The `can_be_detail` method takes in one parameter.  The parameter is the link to the CanBe model.  This must be a symbol that will reference the CanBe model.  In order to create the proper symbol, you can execute the following into your Rails console: `<ModelName>.name.underscore.to_sym`.  Here is an example: `Address.name.underscore.to_sym`.  In the above example, this will be used for the `Address` CanBe model.
 
 You will also need to call the `add_details_model` method in the `can_be` block, passing in the CanBe type and a symbol that represets the details model class.
 
@@ -169,7 +169,7 @@ You can change the type of record and not persist it immediately to the database
 
 If you want to change the type of the record and persist it to the database immediately, you can call the appropriate `change_to_<CanBe type>!` method.  For example, this method call will change the type of record to `:work_address` and persist the change to the database: `Address.create.change_to_work_address!`
 
-There is a validator for the CanBe field, that will unsure that the CanBe field is set to one of the CanBe types before persisting the record. 
+There is a validator for the CanBe field, that will ensure that the CanBe field is set to one of the CanBe types before persisting the record.
 
 When changing the type of the record via either of these methods, you can pass in a block that will provide you access to the new details record so you can set any data in one method call.
 
