@@ -59,6 +59,34 @@ ActiveRecord::Schema.define do
     t.timestamps
   end
 
+  create_table :history_uploads, :force => true do |t|
+    t.string :can_be_type
+    t.integer :details_id
+    t.string :details_type
+    t.timestamps
+  end
+
+  create_table :history_image_upload_details, :force => true do |t|
+    t.string :format
+    t.timestamps
+  end
+
+  create_table :history_video_upload_details, :force => true do |t|
+    t.string :encoding
+    t.timestamps
+  end
+
+  create_table :history_thumbnail_upload_details, :force => true do |t|
+    t.timestamps
+  end
+
+  create_table :history_upload_history_records, :force => true do |t|
+    t.integer :can_be_model_id
+    t.string :can_be_type
+    t.integer :can_be_details_id
+    t.timestamps
+  end
+
   create_table :config_spec_models, :force => true do |t|
     t.string :can_be_type
     t.timestamps

@@ -99,6 +99,12 @@ module CanBe
           after_initialize do |model|
             model.can_be_processor.initialize_details
           end
+
+          if self.can_be_config.keeps_history?
+            after_save do |model|
+              model.can_be_processor.save_history
+            end
+          end
         end
       end
     end

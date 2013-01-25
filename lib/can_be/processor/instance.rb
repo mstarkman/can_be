@@ -18,7 +18,10 @@ module CanBe
         if save
           original_details = @model.send(@details_name)
           @model.update_attributes(@field_name => t)
-          original_details.destroy unless original_details.class == @model.send(@details_name).class
+
+          if !@config.keeps_history?
+            original_details.destroy unless original_details.class == @model.send(@details_name).class
+          end
         else
           self.field_value = t
         end
@@ -46,6 +49,11 @@ module CanBe
         set_details(field_value.to_sym) if has_details? && !@model.send(@details_id)
       end
 
+      def save_history
+        history_model_class = @config.history_model.to_s.camelize.constantize
+        history_model_class.where(can_be_model_id: @model.id, can_be_type: field_value).first_or_create(can_be_details_id: @model.send(@details_name).id)
+      end
+
       private
       def has_details?
         @model.respond_to?(@details_name) && @model.respond_to?(@details_id) && @model.respond_to?(@details_type)
@@ -57,7 +65,19 @@ module CanBe
         classname = @config.details[t.to_sym]
 
         if classname
-          @model.send("#{@details_name}=", classname.to_s.camelize.constantize.new)
+          details_class = classname.to_s.camelize.constantize
+          if @config.keeps_history?
+            history_model_class = @config.history_model.to_s.camelize.constantize
+            history_model = history_model_class.where(can_be_model_id: @model.id, can_be_type: t).first
+
+            if history_model
+              @model.send("#{@details_name}=", details_class.find(history_model.can_be_details_id))
+            else
+              @model.send("#{@details_name}=", details_class.new)
+            end
+          else
+            @model.send("#{@details_name}=", details_class.new)
+          end
         else
           @model.send("#{@details_id}=", nil)
           @model.send("#{@details_type}=", nil)

@@ -61,6 +61,31 @@ end
 class CustomDocumentUploadDetail
 end
 
+class HistoryUpload < ActiveRecord::Base
+  can_be :image_upload, :video_upload, :thumbnail_upload, :document_upload, :pdf_upload do
+    add_details_model :image_upload, :history_image_upload_detail
+    add_details_model :video_upload, :history_video_upload_detail
+    keep_history_in :history_upload_history_record
+  end
+end
+
+class HistoryImageUploadDetail < ActiveRecord::Base
+  can_be_detail :history_upload
+end
+
+class HistoryVideoUploadDetail < ActiveRecord::Base
+  can_be_detail :history_upload
+end
+
+class HistoryThumbnailUploadDetail < ActiveRecord::Base
+end
+
+class HistoryDocumentUploadDetail
+end
+
+class HistoryUploadHistoryRecord < ActiveRecord::Base
+end
+
 class ConfigSpecModel < ActiveRecord::Base
   can_be :type1, :type2
 end

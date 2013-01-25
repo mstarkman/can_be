@@ -207,6 +207,7 @@ describe CanBe::ModelExtensions do
 
     it_behaves_like "it has details", Upload, ImageUploadDetail, VideoUploadDetail
     it_behaves_like "it has details", CustomUpload, CustomImageUploadDetail, CustomVideoUploadDetail, :custom_details
+    it_behaves_like "it has history"
   end
 
   context "#can_be_details" do
