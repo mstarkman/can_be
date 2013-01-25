@@ -149,13 +149,13 @@ The CanBe gem will provide you a lot methods to handle your type processing in a
 
 ### Instantiating New Models
 
-You can continue to instantiate your CanBe models by using the `new` method.  When you do, CanBe will ensure that the type of the record is assigned the detault CanBe type for your model.
+You can continue to instantiate your CanBe models by using the `new` method.  When you do, CanBe will ensure that the type of the record is assigned the default CanBe type for your model.
 
 There are also some helper methods put on your model to make it easier to instantiate the type of model that you want.  These methods will take the form of `new_<CanBe type>`.  For example, you can call `Address.new_home_address`.  These methods will take the same parameters as the base `new` method provided by ActiveRecord.
 
 ### Creating New Models
 
-You can continue to create your CanBe models by using the `create` method.  When you do, CanBe will ensure that the type of the record is assigned the detault CanBe type for your model.
+You can continue to create your CanBe models by using the `create` method.  When you do, CanBe will ensure that the type of the record is assigned the default CanBe type for your model.
 
 There are also some helper methods put on your model to make it easier to create the type of model that you want.  These methods will take the form of `create_<CanBe type>`.  For example, you can call `Address.create_home_address`.  These methods will take the same parameters as the base `create` method provided by ActiveRecord.
 
