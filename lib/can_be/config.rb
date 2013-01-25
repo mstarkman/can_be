@@ -3,7 +3,7 @@ module CanBe
     DEFAULT_CAN_BE_FIELD = :can_be_type
     DEFAULT_DETAILS_NAME = :details
 
-    attr_reader :types
+    attr_reader :types, :history_model
 
     def field_name(name = nil)
       if name.nil?
@@ -44,6 +44,14 @@ module CanBe
 
     def add_details_model(can_be_type, model_symbol)
       self.details[can_be_type] = model_symbol
+    end
+
+    def keep_history_in(history_model)
+      @history_model = history_model
+    end
+
+    def keeps_history?
+      !@history_model.nil?
     end
   end
 end

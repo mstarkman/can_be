@@ -82,5 +82,23 @@ describe CanBe::Config do
       subject.details[:type1].should == :config_spec_model2
     end
   end
+
+  context "#keep_history_in" do
+    it "keeps the history model name" do
+      subject.keep_history_in :history_model
+      subject.history_model.should == :history_model
+    end
+  end
+
+  context "#keeps_history?" do
+    it "keeps history when history_model is specified" do
+      subject.keep_history_in :history_model
+      subject.keeps_history?.should be_true
+    end
+
+    it "doesn't keep history when history_model isn't specified" do
+      subject.keeps_history?.should be_false
+    end
+  end
 end
 
