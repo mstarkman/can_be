@@ -51,7 +51,10 @@ module CanBe
 
       def save_history
         history_model_class = @config.history_model.to_s.camelize.constantize
-        history_model_class.where(can_be_model_id: @model.id, can_be_type: field_value).first_or_create(can_be_details_id: @model.send(@details_name).id)
+
+        unless history_model_class.where(can_be_model_id: @model.id, can_be_type: field_value).exists?
+          history_model_class.create(can_be_model_id: @model.id, can_be_type: field_value, can_be_details_id: @model.send(@details_name).id)
+        end
       end
 
       private
