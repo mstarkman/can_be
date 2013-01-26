@@ -43,14 +43,25 @@ shared_examples "it has history" do
       h.can_be_details_id.should == u.details.id
     end
 
-    it "stores the additional history record when changing the type" do
-      u = HistoryUpload.create_image_upload
-      u.change_to_video_upload!
-      HistoryUploadHistoryRecord.count.should == 2
-      h = HistoryUploadHistoryRecord.last
-      h.can_be_model_id.should == u.id
-      h.can_be_type.should == u.can_be_type
-      h.can_be_details_id.should == u.details.id
+    context "history fields" do
+      before :each do
+        @u = HistoryUpload.create_image_upload
+        @u.change_to_video_upload!
+        HistoryUploadHistoryRecord.count.should == 2
+        @h = HistoryUploadHistoryRecord.last
+      end
+
+      it "stores the correct can_be_model_id value" do
+        @h.can_be_model_id.should == @u.id
+      end
+
+      it "stores the correct can_be_type value" do
+        @h.can_be_type.should == @u.can_be_type
+      end
+
+      it "stores the correct can_be_details_id value" do
+        @h.can_be_details_id.should == @u.details.id
+      end
     end
 
     it "doesn't store an additional history record when changing back to the original type" do
