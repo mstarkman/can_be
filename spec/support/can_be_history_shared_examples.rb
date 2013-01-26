@@ -71,9 +71,25 @@ shared_examples "it has history" do
       u.change_to_image_upload!
       HistoryUploadHistoryRecord.count.should == 2
     end
+
+    context "destroy can_be record" do
+      before :each do
+        u = HistoryUpload.create_video_upload
+        u.change_to_image_upload!
+        u.destroy
+      end
+
+      it "destroys all details records" do
+        HistoryImageUploadDetail.count.should == 0
+        HistoryVideoUploadDetail.count.should == 0
+      end
+
+      it "destroys all of the history records" do
+        HistoryUploadHistoryRecord.count.should == 0
+      end
+    end
   end
 
   # TODO: allow force of change methods to delete the details even though they are storing history
-  # TODO: Make sure that all history records and details get deletes when storing history
   # TODO: Make sure that any details records can get back to the original records when storing history
 end

@@ -57,6 +57,22 @@ module CanBe
         end
       end
 
+      def destroy_history
+        history_model_class = @config.history_model.to_s.camelize.constantize
+
+        histories = history_model_class.where(can_be_model_id: @model.id)
+
+        histories.each do |h|
+          details_class_name = @config.details[h.can_be_type.to_sym].to_s.camelize.constantize
+          details_record = details_class_name.where(id: h.can_be_details_id).first
+          details_record.destroy if details_record
+        end
+
+        histories.destroy_all
+
+        # TODO: Refactor this code and anywhere history_model_class is called
+      end
+
       private
       def has_details?
         @model.respond_to?(@details_name) && @model.respond_to?(@details_id) && @model.respond_to?(@details_type)

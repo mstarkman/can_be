@@ -15,6 +15,7 @@ module CanBe
         define_class_methods
         define_validations
         define_details
+        define_history
       end
 
       private
@@ -99,11 +100,19 @@ module CanBe
           after_initialize do |model|
             model.can_be_processor.initialize_details
           end
+        end
+      end
 
-          if self.can_be_config.keeps_history?
-            after_save do |model|
-              model.can_be_processor.save_history
-            end
+      def define_history
+        return unless @klass.can_be_config.keeps_history?
+
+        @klass.class_eval do
+          after_save do |model|
+            model.can_be_processor.save_history
+          end
+
+          after_destroy do |model|
+            model.can_be_processor.destroy_history
           end
         end
       end
