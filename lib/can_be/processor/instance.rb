@@ -50,27 +50,18 @@ module CanBe
       end
 
       def save_history
-        history_model_class = @config.history_model.to_s.camelize.constantize
-
-        unless history_model_class.where(can_be_model_id: @model.id, can_be_type: field_value).exists?
-          history_model_class.create(can_be_model_id: @model.id, can_be_type: field_value, can_be_details_id: @model.send(@details_name).id)
-        end
+        history_model_class.create({
+          can_be_model_id: @model.id,
+          can_be_type: field_value,
+          can_be_details_id: @model.send(@details_name).id
+        }) unless history_model_for(field_value)
       end
 
       def destroy_history
-        history_model_class = @config.history_model.to_s.camelize.constantize
-
         histories = history_model_class.where(can_be_model_id: @model.id)
 
-        histories.each do |h|
-          details_class_name = @config.details[h.can_be_type.to_sym].to_s.camelize.constantize
-          details_record = details_class_name.where(id: h.can_be_details_id).first
-          details_record.destroy if details_record
-        end
-
+        destroy_details_history(histories)
         histories.destroy_all
-
-        # TODO: Refactor this code and anywhere history_model_class is called
       end
 
       private
@@ -81,26 +72,57 @@ module CanBe
       def set_details(t)
         return unless has_details?
 
-        classname = @config.details[t.to_sym]
-
-        if classname
-          details_class = classname.to_s.camelize.constantize
+        if details_class_name(t)
           if @config.keeps_history?
-            history_model_class = @config.history_model.to_s.camelize.constantize
-            history_model = history_model_class.where(can_be_model_id: @model.id, can_be_type: t).first
-
-            if history_model
-              @model.send("#{@details_name}=", details_class.find(history_model.can_be_details_id))
-            else
-              @model.send("#{@details_name}=", details_class.new)
-            end
+            set_history_details_for(t)
           else
-            @model.send("#{@details_name}=", details_class.new)
+            @model.send("#{@details_name}=", details_for(t))
           end
         else
           @model.send("#{@details_id}=", nil)
           @model.send("#{@details_type}=", nil)
         end
+      end
+
+      def destroy_details_history(histories)
+        histories.each do |h|
+          details_record = details_class(h.can_be_type).where(id: h.can_be_details_id).first
+          details_record.destroy if details_record
+        end
+      end
+
+      def set_history_details_for(t)
+        history_model = history_model_for(t)
+
+        if history_model
+          @model.send("#{@details_name}=", details_for(t, history_model.can_be_details_id))
+        else
+          @model.send("#{@details_name}=", details_for(t))
+        end
+      end
+
+      def details_for(t, details_id = nil)
+        if details_id.nil?
+          details_class(t).new
+        else
+          details_class(t).find(details_id)
+        end
+      end
+
+      def history_model_for(t)
+        history_model_class.where(can_be_model_id: @model.id, can_be_type: t).first
+      end
+
+      def details_class_name(t)
+        @config.details[t.to_sym]
+      end
+
+      def details_class(t)
+        details_class_name(t).to_s.camelize.constantize if details_class_name(t)
+      end
+
+      def history_model_class
+        @config.history_model.to_s.camelize.constantize
       end
     end
   end
