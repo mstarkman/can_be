@@ -131,7 +131,7 @@ shared_examples "it has details" do |can_be_class, image_class, video_class, det
       end
 
       it "removes the old details record when saved" do
-        u.can_be_class.new_image_upload
+        u = can_be_class.new_image_upload
         u.save
         u.change_to_video_upload
         u.save

@@ -15,13 +15,10 @@ module CanBe
       end
 
       def update_field(t, save = false)
-        if save
-          original_details = @model.send(@details_name)
-          @model.update_attributes(@field_name => t)
+        @original_details = @model.send(@details_name)
 
-          if !@config.keeps_history?
-            original_details.destroy unless original_details.class == @model.send(@details_name).class
-          end
+        if save
+          @model.update_attributes(@field_name => t)
         else
           self.field_value = t
         end
@@ -47,6 +44,16 @@ module CanBe
 
       def initialize_details
         set_details(field_value.to_sym) if has_details? && !@model.send(@details_id)
+      end
+
+      def clean_details
+        return unless @original_details
+
+        if @original_details.class != @model.send(@details_name).class && !@config.keeps_history?
+          @original_details.destroy
+        end
+
+        @original_details = nil
       end
 
       def save_history

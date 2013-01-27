@@ -100,6 +100,10 @@ module CanBe
           after_initialize do |model|
             model.can_be_processor.initialize_details
           end
+
+          after_save do |model|
+            model.can_be_processor.clean_details
+          end
         end
       end
 
