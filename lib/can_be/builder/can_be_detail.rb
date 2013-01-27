@@ -31,12 +31,18 @@ module CanBe
         return unless keeps_history?
 
         history_model = @options[:history_model]
+        details_name = @options[:details_name]
         can_be_model = @can_be_model
 
         @klass.instance_eval do
           define_method can_be_model do |*params|
-            details = super(*params)
-            return details if details
+            begin
+              details = association(details_name).reader(false)
+              return details
+            rescue NoMethodError
+              # this should be for the missing 'association_class' method because the association is broken
+              # so we just want to move on and find the record manually
+            end
 
             history_model_class = history_model.to_s.camelize.constantize
             history = history_model_class.where({
