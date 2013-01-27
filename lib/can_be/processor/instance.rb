@@ -8,14 +8,18 @@ module CanBe
         @details_name = @config.details_name.to_sym
         @details_id = "#{@details_name}_id".to_sym
         @details_type = "#{@details_name}_type".to_sym
+        set_cleaning_defaults
       end
 
       def boolean_eval(t)
         field_value.to_s == t.to_s
       end
 
-      def update_field(t, save = false)
+      def update_field(t, options = {})
         @original_details = @model.send(@details_name)
+        @force_history_removal = options[:force_history_removal] if options.has_key?(:force_history_removal)
+
+        save = options.has_key?(:save) ? options[:save] : false
 
         if save
           @model.update_attributes(@field_name => t)
@@ -47,13 +51,23 @@ module CanBe
       end
 
       def clean_details
-        return unless @original_details
-
-        if @original_details.class != @model.send(@details_name).class && !@config.keeps_history?
-          @original_details.destroy
+        if @original_details && @original_details.class != @model.send(@details_name).class
+          if @config.keeps_history?
+            if @force_history_removal
+              @original_details.destroy
+              destroy_history(@original_details.class.name.underscore)
+            end
+          else
+            @original_details.destroy
+          end
         end
 
+        set_cleaning_defaults
+      end
+
+      def set_cleaning_defaults
         @original_details = nil
+        @force_history_removal = false
       end
 
       def save_history
@@ -65,11 +79,15 @@ module CanBe
         }) unless history_model_for(field_value)
       end
 
-      def destroy_history
+      def destroy_histories
         histories = history_model_class.where(can_be_model_id: @model.id)
 
         destroy_details_history(histories)
         histories.destroy_all
+      end
+
+      def destroy_history(details_type)
+        history_model_class.where(can_be_model_id: @model.id, can_be_details_type: details_type).destroy_all
       end
 
       private

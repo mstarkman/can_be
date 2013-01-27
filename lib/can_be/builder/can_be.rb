@@ -48,12 +48,12 @@ module CanBe
               can_be_processor.boolean_eval(t)
             end
 
-            define_method "change_to_#{t}" do |&block|
-              can_be_processor.update_field(t, false, &block)
+            define_method "change_to_#{t}" do |force_history_removal = false, &block|
+              can_be_processor.update_field(t, force_history_removal: force_history_removal, &block)
             end
 
-            define_method "change_to_#{t}!" do |&block|
-              can_be_processor.update_field(t, true, &block)
+            define_method "change_to_#{t}!" do |force_history_removal = false, &block|
+              can_be_processor.update_field(t, save: true, force_history_removal: force_history_removal, &block)
             end
           end
         end
@@ -116,7 +116,7 @@ module CanBe
           end
 
           after_destroy do |model|
-            model.can_be_processor.destroy_history
+            model.can_be_processor.destroy_histories
           end
         end
       end

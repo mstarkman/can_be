@@ -92,8 +92,44 @@ shared_examples "it has history" do
         HistoryUploadHistoryRecord.count.should == 0
       end
     end
-  end
 
-  # TODO: allow force of change methods to delete the details even though they are storing history
-  # TODO: calling a change_to (no exclamation) method should remove the old details record when the record is saved
+    context "change_to! force destory" do
+      before :each do
+        @u = HistoryUpload.create_image_upload
+        @u.change_to_video_upload!(true)
+      end
+
+      it "destroys the details record" do
+        HistoryImageUploadDetail.count.should == 0
+      end
+
+      it "keeps the correct details record" do
+        HistoryVideoUploadDetail.count.should == 1
+      end
+
+      it "destroys the history record" do
+        HistoryUploadHistoryRecord.count.should == 1
+      end
+    end
+
+    context "change_to force destory" do
+      before :each do
+        @u = HistoryUpload.create_image_upload
+        @u.change_to_video_upload(true)
+        @u.save
+      end
+
+      it "destroys the details record" do
+        HistoryImageUploadDetail.count.should == 0
+      end
+
+      it "keeps the correct details record" do
+        HistoryVideoUploadDetail.count.should == 1
+      end
+
+      it "destroys the history record" do
+        HistoryUploadHistoryRecord.count.should == 1
+      end
+    end
+  end
 end
