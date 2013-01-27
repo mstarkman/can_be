@@ -129,6 +129,14 @@ shared_examples "it has details" do |can_be_class, image_class, video_class, det
         end
         u.send(details_name).encoding.should == new_encoding
       end
+
+      it "removes the old details record when saved" do
+        u.can_be_class.new_image_upload
+        u.save
+        u.change_to_video_upload
+        u.save
+        image_class.count.should == 0
+      end
     end
 
     context "change type via #change_to!" do

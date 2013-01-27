@@ -95,4 +95,5 @@ shared_examples "it has history" do
   end
 
   # TODO: allow force of change methods to delete the details even though they are storing history
+  # TODO: calling a change_to (no exclamation) method should remove the old details record when the record is saved
 end
