@@ -62,6 +62,10 @@ shared_examples "it has history" do
       it "stores the correct can_be_details_id value" do
         @h.can_be_details_id.should == @u.details.id
       end
+
+      it "stores the correct can_be_details_type" do
+        @h.can_be_details_type.should == HistoryVideoUploadDetail.name.underscore.to_s
+      end
     end
 
     it "doesn't store an additional history record when changing back to the original type" do
@@ -91,5 +95,4 @@ shared_examples "it has history" do
   end
 
   # TODO: allow force of change methods to delete the details even though they are storing history
-  # TODO: Make sure that any details records can get back to the original records when storing history
 end

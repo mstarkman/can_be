@@ -53,7 +53,8 @@ module CanBe
         history_model_class.create({
           can_be_model_id: @model.id,
           can_be_type: field_value,
-          can_be_details_id: @model.send(@details_name).id
+          can_be_details_id: @model.send(@details_name).id,
+          can_be_details_type: details_class_name(field_value)
         }) unless history_model_for(field_value)
       end
 

@@ -52,7 +52,7 @@ class CustomImageUploadDetail < ActiveRecord::Base
 end
 
 class CustomVideoUploadDetail < ActiveRecord::Base
-  can_be_detail :custom_upload, :custom_details
+  can_be_detail :custom_upload, details_name: :custom_details
 end
 
 class CustomThumbnailUploadDetail < ActiveRecord::Base
@@ -70,11 +70,11 @@ class HistoryUpload < ActiveRecord::Base
 end
 
 class HistoryImageUploadDetail < ActiveRecord::Base
-  can_be_detail :history_upload
+  can_be_detail :history_upload, history_model: :history_upload_history_record
 end
 
 class HistoryVideoUploadDetail < ActiveRecord::Base
-  can_be_detail :history_upload
+  can_be_detail :history_upload, history_model: :history_upload_history_record
 end
 
 class HistoryThumbnailUploadDetail < ActiveRecord::Base

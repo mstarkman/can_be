@@ -15,6 +15,7 @@ require 'support/models'
 require 'support/can_be_shared_examples'
 require 'support/can_be_history_shared_examples'
 require 'support/can_be_detail_shared_examples'
+require 'support/can_be_detail_history_shared_examples'
 
 require 'can_be/rspec/matchers'
 

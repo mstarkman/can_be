@@ -84,6 +84,7 @@ ActiveRecord::Schema.define do
     t.integer :can_be_model_id
     t.string :can_be_type
     t.integer :can_be_details_id
+    t.string :can_be_details_type
     t.timestamps
   end
 

@@ -213,5 +213,6 @@ describe CanBe::ModelExtensions do
   context "#can_be_details" do
     it_behaves_like "it is a details model", Upload, ImageUploadDetail
     it_behaves_like "it is a details model", CustomUpload, CustomImageUploadDetail
+    it_behaves_like "it is a details model with history"
   end
 end
