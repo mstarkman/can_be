@@ -1,3 +1,5 @@
+## [Version 0.4.0](https://github.com/mstarkman/can_be)
+
 ## [Version 0.3.0](https://github.com/mstarkman/can_be/tree/v0.3.0)
 
 * Allowed the options to be specified inside the can_be method call block
