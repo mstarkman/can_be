@@ -27,6 +27,7 @@ And then execute:
 The documentation for the basic implementation of CanBe can be found in this readme.  Here is the documentation for the other features.
 
 * [Different Attributes per CanBe Type (details)](https://github.com/mstarkman/can_be/blob/master/docs/details.md)
+* [Keeping Details History When Changing CanBe Types](https://github.com/mstarkman/can_be/blob/master/docs/history.md)
 * [Custom RSpec Matchers](https://github.com/mstarkman/can_be/blob/master/docs/rspec_matcher.md)
 
 ## Database Configuration (via migrations)
