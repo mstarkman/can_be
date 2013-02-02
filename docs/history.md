@@ -1,6 +1,6 @@
 # Keeping Details History When Changing CanBe Types #
 
-CanBe provides a history facility that will allow the [details](https://github.com/mstarkman/can_be/blob/master/docs/details.md) data to be preserved when switching between CanBe types.  This way if you switch back to a CanBe type that was previously used, the specific data for the new CanBe type will still be available.
+CanBe provides a history facility that will allow the [details](details.md) data to be preserved when switching between CanBe types.  This way if you switch back to a CanBe type that was previously used, the specific data for the new CanBe type will still be available.
 
 ## Database Migrations ##
 
@@ -16,7 +16,7 @@ create_table :address_can_be_histories, :force => true do |t|
 end
 ```
 
-**NOTE:** Examples of the database migrations can be found in the [`spec/support/schema.rb`](https://github.com/mstarkman/can_be/blob/master/spec/support/schema.rb) file.
+**NOTE:** Examples of the database migrations can be found in the [`spec/support/schema.rb`](../spec/support/schema.rb) file.
 
 ## Models ##
 

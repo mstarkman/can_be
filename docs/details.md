@@ -30,7 +30,7 @@ class AddCanBeDetailsToAddresses < ActiveRecord::Migration
 end
 ```
 
-**NOTE:** Examples of the database migrations can be found in the [`spec/support/schema.rb`](https://github.com/mstarkman/can_be/blob/master/spec/support/schema.rb) file.
+**NOTE:** Examples of the database migrations can be found in the [`spec/support/schema.rb`](../spec/support/schema.rb) file.
 
 ## Models ##
 
@@ -71,7 +71,7 @@ class HomeAddressDetail < ActiveRecord::Base
 end
 ```
 
-**NOTE:** Examples of the model configurations can be found in the [`spec/support/models.rb`](https://github.com/mstarkman/can_be/blob/master/spec/support/models.rb) file.
+**NOTE:** Examples of the model configurations can be found in the [`spec/support/models.rb`](../spec/support/models.rb) file.
 
 ## Accessing the Details
 

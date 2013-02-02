@@ -6,7 +6,7 @@ Here is a blog post that will describe more of the rationale behind the CanBe ge
 
 ## Versioning
 
-I will be following [Semantic Versioning](http://semver.org/) as closely as possible.  The `master` branch will be the latest development version and may not match the version of the code you are using. There is a git tag for each released version.  The [CHANGELOG.md](https://github.com/mstarkman/can_be/blob/master/CHANGELOG.md) will contain the correct links to each version.
+I will be following [Semantic Versioning](http://semver.org/) as closely as possible.  The `master` branch will be the latest development version and may not match the version of the code you are using. There is a git tag for each released version.  The [CHANGELOG.md](CHANGELOG.md) will contain the correct links to each version.
 
 ## Installation
 
@@ -26,9 +26,9 @@ And then execute:
 
 The documentation for the basic implementation of CanBe can be found in this readme.  Here is the documentation for the other features.
 
-* [Different Attributes per CanBe Type (details)](https://github.com/mstarkman/can_be/blob/master/docs/details.md)
-* [Keeping Details History When Changing CanBe Types](https://github.com/mstarkman/can_be/blob/master/docs/history.md)
-* [Custom RSpec Matchers](https://github.com/mstarkman/can_be/blob/master/docs/rspec_matcher.md)
+* [Different Attributes per CanBe Type (details)](docs/details.md)
+* [Keeping Details History When Changing CanBe Types](docs/history.md)
+* [Custom RSpec Matchers](docs/rspec_matcher.md)
 
 ## Database Configuration (via migrations)
 
@@ -45,7 +45,7 @@ class AddCanBeTypeToAddresses < ActiveRecord::Migration
 end
 ```
 
-**NOTE:** Examples of the database migrations can be found in the [`spec/support/schema.rb`](https://github.com/mstarkman/can_be/blob/master/spec/support/schema.rb) file.
+**NOTE:** Examples of the database migrations can be found in the [`spec/support/schema.rb`](spec/support/schema.rb) file.
 
 ## Model Configuration
 
@@ -82,7 +82,7 @@ class Person < ActiveRecord::Base
 end
 ```
 
-**NOTE:** Examples of the model configurations can be found in the [`spec/support/models.rb`](https://github.com/mstarkman/can_be/blob/master/spec/support/models.rb) file.
+**NOTE:** Examples of the model configurations can be found in the [`spec/support/models.rb`](spec/support/models.rb) file.
 
 ## Usage
 
@@ -134,4 +134,4 @@ Methods are also defined on your CanBe model that will find all of the records f
 
 ## License
 
-See [LICENSE.txt](https://github.com/mstarkman/can_be/blob/master/LICENSE.txt).
+See [LICENSE.txt](LICENSE.txt).
