@@ -12,10 +12,11 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{CanBe allows you to track the type of your ActiveRecord model in a consistent simple manner.  With just a little configuration on your part, each type of record can contain different attributes that are specifc to that type of record.  From a data modelling perspective this is preferred over ActiveRecord STI since you will not have many columns in your database that have null values.  Under the hood, CanBe uses one-to-one Polymorphic Associations to accomplish the different attributes per type.}
   gem.homepage      = ""
 
-  gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.require_paths = ["lib"]
+  gem.required_ruby_version = '>= 1.9.2'
+  gem.files                 = `git ls-files`.split($/)
+  gem.executables           = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.test_files            = gem.files.grep(%r{^(test|spec|features)/})
+  gem.require_paths         = ["lib"]
 
   gem.add_development_dependency('rspec', '~> 2.0')
   gem.add_development_dependency('sqlite3')
