@@ -1,0 +1,8 @@
+source "http://rubygems.org"
+
+gem "activerecord", "~> 4.0.0.beta1"
+gem "activesupport", "~> 4.0.0.beta1"
+gem "database_cleaner", "~>1.0.0.RC1"
+
+gemspec :path=>"../"
+
