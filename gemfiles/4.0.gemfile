@@ -4,5 +4,9 @@ gem "activerecord", "~> 4.0.0.beta1"
 gem "activesupport", "~> 4.0.0.beta1"
 gem "database_cleaner", "~>1.0.0.RC1"
 
-gemspec :path=>"../"
+if File.dirname(__FILE__).split('/').last == 'gemfiles'
+  gemspec path: '../'
+else
+  gemspec
+end
 
