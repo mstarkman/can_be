@@ -1,4 +1,8 @@
-## [Version 0.4.0](https://github.com/mstarkman/can_be)
+## [Version 0.5.0](https://github.com/mstarkman/can_be)
+
+## [Version 0.4.0](https://github.com/mstarkman/can_be/tree/v0.4.0)
+
+* Updated code to work with Rails 4.0.0beta1
 
 ## [Version 0.3.0](https://github.com/mstarkman/can_be/tree/v0.3.0)
 
