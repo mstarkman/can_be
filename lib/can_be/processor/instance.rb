@@ -90,6 +90,10 @@ module CanBe
         history_model_class.where(can_be_model_id: @model.id, can_be_details_type: details_type).destroy_all
       end
 
+      def destroy_details
+        @model.send(@details_name).destroy
+      end
+
       private
       def has_details?
         @model.respond_to?(@details_name) && @model.respond_to?(@details_id) && @model.respond_to?(@details_type)
@@ -105,8 +109,7 @@ module CanBe
             @model.send("#{@details_name}=", details_for(t))
           end
         else
-          @model.send("#{@details_id}=", nil)
-          @model.send("#{@details_type}=", nil)
+          @model.send("#{@details_name}=", nil)
         end
       end
 
