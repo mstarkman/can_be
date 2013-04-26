@@ -134,4 +134,4 @@ Methods are also defined on your CanBe model that will find all of the records f
 
 ## License
 
-See [LICENSE.txt](LICENSE.txt).
+See [LICENSE.txt](LICENSE.txt).  
