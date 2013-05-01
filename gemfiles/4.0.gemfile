@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
-gem "activerecord", "~> 4.0.0.beta1"
-gem "activesupport", "~> 4.0.0.beta1"
+gem "activerecord", "~> 4.0.0.rc1"
+gem "activesupport", "~> 4.0.0.rc1"
 gem "database_cleaner", "~>1.0.0.RC1"
 
 if File.dirname(__FILE__).split('/').last == 'gemfiles'
